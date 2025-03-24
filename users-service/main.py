@@ -13,7 +13,7 @@ app = FastAPI()
 # MongoDB connection details
 MONGO_URI = os.getenv("MONGO_URI")
 DATABASE_NAME = os.getenv("DATABASE_NAME")
-COLLECTION_NAME = os.getenv("COLLECTION_NAME")
+COLLECTION_NAME = "users"
 
 # Connect to MongoDB
 client = MongoClient(MONGO_URI)
