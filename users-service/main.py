@@ -5,10 +5,19 @@ from pydantic import BaseModel
 from datetime import datetime, timezone
 from dotenv import load_dotenv
 import os
+from fastapi.middleware.cors import CORSMiddleware 
 
 # Load environment variables from .env file
 load_dotenv()
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],  
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # MongoDB connection details
 MONGO_URI = os.getenv("MONGO_URI")
