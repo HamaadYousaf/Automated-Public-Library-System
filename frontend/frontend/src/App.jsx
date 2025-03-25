@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
 import './App.css'
 import Navbar from './Navbar'
@@ -9,13 +9,18 @@ import ScrollToTop from './ScrollToTop'
 import MainPage from './MainPage'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    setIsLoggedIn(!!user);
+  }, []);
 
   return (
     <>
       <BrowserRouter>
         <ScrollToTop />
-        <Navbar />
+        <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
         {/*<div className='main-content'>
           <div className='page-content'>
             <Routes>
@@ -29,7 +34,7 @@ function App() {
             <Routes>
               <Route path='/' element={<MainPage />} />
               <Route path='/signup' element={<Signup />} />
-              <Route path='/login' element={<Login />} />
+              <Route path='/login' element={<Login setIsLoggedIn={setIsLoggedIn} />} />
             </Routes>
           </div>
         </div>
