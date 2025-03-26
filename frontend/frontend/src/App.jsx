@@ -10,6 +10,7 @@ import MainPage from './MainPage'
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const user = localStorage.getItem("user");
@@ -20,7 +21,8 @@ function App() {
     <>
       <BrowserRouter>
         <ScrollToTop />
-        <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+        <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm} />
         {/*<div className='main-content'>
           <div className='page-content'>
             <Routes>
@@ -32,7 +34,7 @@ function App() {
         <div className='main-content'>
           <div className='page-content'>
             <Routes>
-              <Route path='/' element={<MainPage isLoggedIn={isLoggedIn} />} />
+              <Route path='/' element={<MainPage isLoggedIn={isLoggedIn} searchTerm={searchTerm} />} />
               <Route path='/signup' element={<Signup />} />
               <Route path='/login' element={<Login setIsLoggedIn={setIsLoggedIn} />} />
             </Routes>
