@@ -21,8 +21,6 @@ export default function Login({ setIsLoggedIn }) {
 
             const data = await res.json();
             if (res.ok) {
-                alert("Login successful!");
-
                 // Save user in localStorage
                 localStorage.setItem("user", JSON.stringify(data.user));
                 setIsLoggedIn(true); // update auth state in App
@@ -35,8 +33,6 @@ export default function Login({ setIsLoggedIn }) {
             console.error("Login error:", err);
         }
     };
-
-
 
     return (
         <div className="card">

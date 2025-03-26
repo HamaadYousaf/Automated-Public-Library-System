@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./CommonStyles.css";
 
 export default function Signup() {
@@ -8,6 +9,8 @@ export default function Signup() {
         password: "",
         preferences: []
     });
+
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -24,8 +27,7 @@ export default function Signup() {
 
             const data = await res.json();
             if (res.ok) {
-                alert("Signup successful!");
-                console.log(data);
+                navigate("/login");
             } else {
                 alert(`Signup failed: ${data.detail}`);
             }

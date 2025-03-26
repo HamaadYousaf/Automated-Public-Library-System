@@ -32,7 +32,7 @@ function App() {
         <div className='main-content'>
           <div className='page-content'>
             <Routes>
-              <Route path='/' element={<MainPage />} />
+              <Route path='/' element={<MainPage isLoggedIn={isLoggedIn} />} />
               <Route path='/signup' element={<Signup />} />
               <Route path='/login' element={<Login setIsLoggedIn={setIsLoggedIn} />} />
             </Routes>
