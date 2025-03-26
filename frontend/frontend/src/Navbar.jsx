@@ -2,7 +2,7 @@ import React from 'react';
 import './Navbar.css';
 import { Link, useNavigate } from 'react-router-dom';
 
-export default function Navbar({ isLoggedIn, setIsLoggedIn }) {
+export default function Navbar({ isLoggedIn, setIsLoggedIn, searchTerm, setSearchTerm }) {
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -22,7 +22,10 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn }) {
                 <input
                     type="text"
                     placeholder='Search for books...'
-                    className='search-box' />
+                    className='search-box'
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
             </div>
             <div className='nav-links'>
                 <ul>
