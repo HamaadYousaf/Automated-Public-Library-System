@@ -1,37 +1,33 @@
 """
-Main application setup with CORS and error handling
+Main FastAPI application setup
 """
-
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from routers.resources import router as books_router  # Ensure this import matches your file structure
+from fastapi.middleware.cors import CORSMiddleware 
+from routers.resources import router as books_router
 from dotenv import load_dotenv
 
-# Load environment variables (for MongoDB credentials)
+# Load environment variables
 load_dotenv()
 
-# Initialize FastAPI app
+# Initialize FastAPI application
 app = FastAPI(
-    title="Automated Library System",
-    description="API for managing physical/digital library resources",
-    version="2.3",
-    docs_url="/docs"  # Access Swagger UI at http://localhost:8000/docs
+    title="Library Books Service",
+    description="API for managing library book inventory and search",
+    version="1.2.0"
 )
 
-# ================== CORS Configuration ==================
-# Required for frontend communication (e.g., React/Vue.js)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins (replace with your frontend URL in production)
-    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# ================== Include Routes ==================
-app.include_router(books_router)  # Connects your resources.py endpoints
+# Include book management routes
+app.include_router(books_router)
 
-# ================== Health Check ==================
-@app.get("/Status", tags=["System"])
-def ServerStatus():
-    """Verify server status"""
-    return {"status": "active"}
+@app.get("/status", summary="Check system status")
+def system_status():
+    """Returns current API status"""
+    return {"status": "operational"}
