@@ -4,9 +4,9 @@ import './App.css'
 import Navbar from './Navbar'
 import Login from './Login'
 import Signup from './Signup'
-import Sidebar from './Sidebar/Sidebar'
 import ScrollToTop from './ScrollToTop'
 import MainPage from './MainPage'
+import BookPage from './BookPage'
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -23,18 +23,11 @@ function App() {
         <ScrollToTop />
         <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} searchTerm={searchTerm}
           setSearchTerm={setSearchTerm} />
-        {/*<div className='main-content'>
-          <div className='page-content'>
-            <Routes>
-              <Route path='/' element={<Sidebar />} />
-              <Route path='/projects/:id' element={<DetailedPages />} />
-            </Routes>
-          </div>
-        </div>*/}
         <div className='main-content'>
           <div className='page-content'>
             <Routes>
               <Route path='/' element={<MainPage isLoggedIn={isLoggedIn} searchTerm={searchTerm} />} />
+              <Route path='/books/:id' element={<BookPage />} />
               <Route path='/signup' element={<Signup />} />
               <Route path='/login' element={<Login setIsLoggedIn={setIsLoggedIn} />} />
             </Routes>

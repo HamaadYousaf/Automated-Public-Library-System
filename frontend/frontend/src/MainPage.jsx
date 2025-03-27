@@ -42,13 +42,16 @@ export default function MainPage({ isLoggedIn, searchTerm }) {
                             <div className="book-header">
                                 <h3>{book.title}</h3>
                             </div>
+                            <div className="book-image">
+                                <img className="image" src={book.image} alt="" />
+                            </div>
                             <p><strong>Author:</strong> {book.author}</p>
                             <p><strong>Genre:</strong> {book.genre}</p>
                             <p><strong>Type:</strong> {book.media_type}</p>
                             <p><strong>Copies:</strong> {book.available_copies}</p>
                         </div>
                         <div className="book-button">
-                            <button className="button">{book.title}</button>
+                            <Link to={`/books/${book._id}`}><button className="button">{book.title}</button></Link>
                         </div>
                     </div>
                 ))}

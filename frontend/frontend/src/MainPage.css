@@ -92,3 +92,14 @@
     display: flex;
     justify-content: center;
 }
+
+.book-image {
+    display: flex;
+    justify-content: center;
+}
+
+.image {
+    width: 10rem;
+    height: 12rem;
+    margin: 1rem 0;
+}
