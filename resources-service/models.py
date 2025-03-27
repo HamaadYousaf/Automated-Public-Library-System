@@ -23,7 +23,7 @@ class MediaType(str, Enum):
     - book: Physical book
     - e-book: Digital ebook format
     - audiobook: Audio recording format
-    """
+    """ 
     BOOK = "book"
     EBOOK = "e-book"
     AUDIOBOOK = "audiobook"
