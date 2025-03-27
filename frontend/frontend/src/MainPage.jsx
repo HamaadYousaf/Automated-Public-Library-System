@@ -2,6 +2,7 @@ import "./MainPage.css"
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function MainPage({ isLoggedIn, searchTerm }) {
     const [books, setBooks] = useState([]);
@@ -37,11 +38,18 @@ export default function MainPage({ isLoggedIn, searchTerm }) {
             <div className="book-list">
                 {filteredBooks.map((book) => (
                     <div key={book._id} className="book-card">
-                        <h3>{book.title}</h3>
-                        <p><strong>Author:</strong> {book.author}</p>
-                        <p><strong>Genre:</strong> {book.genre}</p>
-                        <p><strong>Type:</strong> {book.media_type}</p>
-                        <p><strong>Copies:</strong> {book.available_copies}</p>
+                        <div className="book-info">
+                            <div className="book-header">
+                                <h3>{book.title}</h3>
+                            </div>
+                            <p><strong>Author:</strong> {book.author}</p>
+                            <p><strong>Genre:</strong> {book.genre}</p>
+                            <p><strong>Type:</strong> {book.media_type}</p>
+                            <p><strong>Copies:</strong> {book.available_copies}</p>
+                        </div>
+                        <div className="book-button">
+                            <button className="button">{book.title}</button>
+                        </div>
                     </div>
                 ))}
             </div>
