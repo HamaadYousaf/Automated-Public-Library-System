@@ -1,8 +1,10 @@
 """
 Database models and connection setup for library resources
+with validation and image support
 """
 from enum import Enum
-from pydantic import BaseModel, Field
+from typing import Optional
+from pydantic import BaseModel, Field, HttpUrl, validator
 from pymongo import MongoClient
 import os
 from dotenv import load_dotenv
@@ -28,13 +30,20 @@ class MediaType(str, Enum):
 
 class Book(BaseModel):
     """
-    Data model representing a library resource
-    - Validates input data types and values
-    - Provides default values where applicable
+    Data model representing a library resource with:
+    - Input validation
+    - Default values
+    - Digital/physical distinction
     """
     title: str = Field(..., example="Hamlet", description="Title of the resource")
     author: str = Field(..., example="William Shakespeare", description="Author/creator")
-    published_year: int = Field(..., example=1603, description="Year of publication")
+    published_year: int = Field(
+        ..., 
+        example=1603,
+        ge=1400,
+        le=2025,
+        description="Year of publication (1400-2025)"
+    )
     genre: str = Field(..., example="Tragedy", description="Genre/category")
     media_type: MediaType = Field(
         default=MediaType.BOOK,
@@ -46,3 +55,14 @@ class Book(BaseModel):
         example=2,
         description="Available units/copies (physical) or licenses (digital)"
     )
+    image: Optional[HttpUrl] = Field(
+        default=None,
+        description="URL to cover image"
+    )
+
+    @validator('available_copies')
+    def validate_copies(cls, v, values):
+        """Auto-set unlimited copies for digital items"""
+        if values.get('media_type') in [MediaType.EBOOK, MediaType.AUDIOBOOK]:
+            return 9999  # Unlimited licenses
+        return v
