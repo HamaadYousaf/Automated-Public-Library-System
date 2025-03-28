@@ -5,32 +5,28 @@ from pydantic import BaseModel
 from datetime import datetime, timezone
 from dotenv import load_dotenv
 import os
-from fastapi.middleware.cors import CORSMiddleware 
+from fastapi.middleware.cors import CORSMiddleware
 
-# Load environment variables from .env file
 load_dotenv()
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  
+    allow_origins=["http://localhost:5173"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# MongoDB connection details
 MONGO_URI = os.getenv("MONGO_URI")
 DATABASE_NAME = os.getenv("DATABASE_NAME")
 COLLECTION_NAME = "users"
 
-# Connect to MongoDB
 client = MongoClient(MONGO_URI)
 db = client[DATABASE_NAME]
 users_collection = db[COLLECTION_NAME]
 
 
-# Pydantic model for user input validation
 class User(BaseModel):
     name: str
     email: str
@@ -50,7 +46,6 @@ async def get_all_users():
     """
     try:
         users = list(users_collection.find())
-        # Convert ObjectId to string for JSON serialization
         for user in users:
             user["_id"] = str(user["_id"])
         return users
@@ -70,16 +65,10 @@ async def create_user(user: User):
                 status_code=400, detail="User with this email already exists"
             )
 
-        # Convert the user model to a dictionary and add the created_at field
-        user_dict = user.model_dump()  # Use model_dump instead of dict
-        user_dict["created_at"] = datetime.now(
-            timezone.utc
-        )  # Use timezone-aware UTC datetime
-
+        user_dict = user.model_dump()
+        user_dict["created_at"] = datetime.now(timezone.utc)
         # Insert the user into the collection
         result = users_collection.insert_one(user_dict)
-
-        # Add the inserted ID to the response
         user_dict["_id"] = str(result.inserted_id)
 
         return {"message": "User created successfully", "user": user_dict}
@@ -102,7 +91,6 @@ async def login(login_request: LoginRequest):
         if user["password"] != login_request.password:
             raise HTTPException(status_code=401, detail="Invalid password")
 
-        # Convert ObjectId to string for JSON serialization
         user["_id"] = str(user["_id"])
         return {"message": "Login successful", "user": user}
     except Exception as e:
