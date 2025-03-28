@@ -6,11 +6,21 @@ from pydantic import BaseModel, Field
 from datetime import datetime, timedelta
 import re
 from bson import ObjectId
+from fastapi.middleware.cors import CORSMiddleware
 
 # Load environment variables
 load_dotenv()
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 # MongoDB connection details
 MONGO_URI = os.getenv("MONGO_URI")
@@ -157,3 +167,10 @@ def return_book(user_id: str, book_name: str):
         books_collection.update_one({"_id": book["_id"]}, {"$inc": {"available_copies": 1}})
 
     return {"message": "Book returned successfully."}
+
+@app.get("/mybooks/{user_id}")
+def get_my_books(user_id: str):
+    borrowed = list(reservations_collection.find({"user_id": user_id, "status": "borrowed"}))
+    for entry in borrowed:
+        entry["_id"] = str(entry["_id"])
+    return borrowed

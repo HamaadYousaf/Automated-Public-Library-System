@@ -27,7 +27,7 @@ function App() {
           <div className='page-content'>
             <Routes>
               <Route path='/' element={<MainPage isLoggedIn={isLoggedIn} searchTerm={searchTerm} />} />
-              <Route path='/books/:id' element={<BookPage />} />
+              <Route path='/books/:id' element={<BookPage isLoggedIn={isLoggedIn} />} />
               <Route path='/signup' element={<Signup />} />
               <Route path='/login' element={<Login setIsLoggedIn={setIsLoggedIn} />} />
             </Routes>
