@@ -95,3 +95,27 @@ async def login(login_request: LoginRequest):
         return {"message": "Login successful", "user": user}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/users/update-preferences")
+async def update_preferences(email: str, preferences: List[str]):
+    """
+    Update a user's preferences in the MongoDB collection.
+    """
+    try:
+        # Find the user by email
+        user = users_collection.find_one({"email": email})
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        # Update the user's preferences
+        users_collection.update_one(
+            {"email": email}, {"$set": {"preferences": preferences}}
+        )
+
+        return {
+            "message": "Preferences updated successfully",
+            "preferences": preferences,
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
