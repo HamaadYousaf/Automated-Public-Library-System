@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { act, useEffect, useState } from "react";
 import "./BookPage.css";
 
 export default function BookPage() {
@@ -10,8 +10,8 @@ export default function BookPage() {
         fetch("http://localhost:8001/api/books")
             .then(res => res.json())
             .then(data => {
-                const foundBook = data.find(b => b._id === id);
-                setBook(foundBook);
+                const actualBook = data.find(b => b._id === id);
+                setBook(actualBook);
             })
             .catch(err => {
                 console.error("Failed to load book:", err);
