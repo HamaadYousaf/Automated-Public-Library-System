@@ -35,7 +35,7 @@ def find_book(book_name: str):
         "title": {"$regex": f"^{re.escape(book_name)}$", "$options": "i"}
     })
 
-# ✅ Check book availability
+# Check book availability
 @app.get("/available/{book_name}")
 def check_availability(book_name: str):
     book = find_book(book_name)
@@ -43,7 +43,7 @@ def check_availability(book_name: str):
         raise HTTPException(status_code=404, detail="Book not found in the collection.")
     return {"available": book["available_copies"] > 0}
 
-# ✅ Reserve a book (ONLY if all copies are out of stock)
+# Reserve a book (ONLY if all copies are out of stock)
 @app.post("/reserve/")
 def reserve_book(user_id: str, book_name: str):
     book_name = clean_text(book_name)
@@ -72,7 +72,7 @@ def reserve_book(user_id: str, book_name: str):
 
     return {"message": "Book reserved successfully.", "due_date": reservation["due_date"]}
 
-# ✅ Borrow a book (2-week max borrow time)
+# Borrow a book (2-week max borrow time)
 @app.post("/borrow/")
 def borrow_book(user_id: str, book_name: str):
     book_name = clean_text(book_name)
@@ -111,7 +111,7 @@ def borrow_book(user_id: str, book_name: str):
 
     return {"message": "Book borrowed successfully.", "due_date": reservation["due_date"]}
 
-# ✅ Renew a book (adds 1 week to current due date)
+# Renew a book (adds 1 week to current due date)
 @app.post("/renew/")
 def renew_book(user_id: str, book_name: str):
     book_name = clean_text(book_name)
@@ -131,7 +131,7 @@ def renew_book(user_id: str, book_name: str):
 
     return {"message": "Book renewed successfully.", "new_due_date": new_due_date}
 
-# ✅ Return a book (increases available copies)
+# Return a book (increases available copies)
 @app.post("/return/")
 def return_book(user_id: str, book_name: str):
     book_name = clean_text(book_name)
