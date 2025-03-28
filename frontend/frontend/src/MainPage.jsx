@@ -6,6 +6,11 @@ import { Link } from "react-router-dom";
 
 export default function MainPage({ isLoggedIn, searchTerm }) {
     const [books, setBooks] = useState([]);
+    const [myBooks, setMyBooks] = useState([]); // books user has borrowed
+    const [showMyBooks, setShowMyBooks] = useState(false);
+
+    const user = JSON.parse(localStorage.getItem("user"));
+    const userId = user?.email;
 
     useEffect(() => {
         fetch("http://localhost:8001/api/books")
@@ -18,8 +23,21 @@ export default function MainPage({ isLoggedIn, searchTerm }) {
             });
     }, []);
 
+    useEffect(() => {
+        if (isLoggedIn && userId) {
+            fetch(`http://localhost:8002/mybooks/${userId}`)
+                .then(res => res.json())
+                .then(data => {
+                    const borrowedTitles = data.map(entry => entry.book_name);
+                    setMyBooks(borrowedTitles);
+                })
+                .catch(err => console.error("Error fetching my books:", err));
+        }
+    }, [isLoggedIn, userId]);
+
     const filteredBooks = books.filter((book) =>
-        book.title.toLowerCase().includes(searchTerm.toLowerCase())
+        book.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        (!showMyBooks || myBooks.includes(book.title))
     );
 
     return (
@@ -27,7 +45,18 @@ export default function MainPage({ isLoggedIn, searchTerm }) {
             <div className="filtering-section">
                 {isLoggedIn && (
                     <>
-                        <button className="filtering">My Books</button>
+                        <button
+                            className="filtering"
+                            onClick={() => setShowMyBooks(false)}
+                        >
+                            All Books
+                        </button>
+                        <button
+                            className="filtering"
+                            onClick={() => setShowMyBooks(true)}
+                        >
+                            My Books
+                        </button>
                         <button className="filtering">Recommended Books</button>
                     </>
                 )}
