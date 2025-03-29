@@ -26,7 +26,6 @@ export default function BookPage({ isLoggedIn }) {
             method: "POST"
         })
             .then(res => res.json())
-            .then(data => alert(data.message))
             .catch(() => alert("Reservation failed"));
     };
 
@@ -35,7 +34,6 @@ export default function BookPage({ isLoggedIn }) {
             method: "POST"
         })
             .then(res => res.json())
-            .then(data => alert(data.message))
             .catch(() => alert("Borrow failed"));
     };
 
@@ -44,7 +42,6 @@ export default function BookPage({ isLoggedIn }) {
             method: "POST"
         })
             .then(res => res.json())
-            .then(data => alert(data.message))
             .catch(() => alert("Renewal failed"));
     };
 
@@ -53,7 +50,6 @@ export default function BookPage({ isLoggedIn }) {
             method: "POST"
         })
             .then(res => res.json())
-            .then(data => alert(data.message))
             .catch(() => alert("Return failed"));
     };
 
@@ -70,10 +66,13 @@ export default function BookPage({ isLoggedIn }) {
                             {book.available_copies === 0 ? (
                                 <button onClick={handleReserve}>Reserve</button>
                             ) : (
-                                <button onClick={handleBorrow}>Borrow</button>
+                                <>
+                                    <button onClick={handleBorrow}>Borrow</button>
+                                    <button onClick={handleRenew}>Renew</button>
+                                    <button onClick={handleReturn}>Return</button>
+                                </>
                             )}
-                            <button onClick={handleRenew}>Renew</button>
-                            <button onClick={handleReturn}>Return</button>
+
                         </>
                     )}
                 </div>
