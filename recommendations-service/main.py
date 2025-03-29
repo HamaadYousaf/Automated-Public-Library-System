@@ -8,7 +8,6 @@ import os
 from random import sample
 from fastapi.middleware.cors import CORSMiddleware
 
-
 load_dotenv()
 app = FastAPI()
 
@@ -29,9 +28,11 @@ users_collection = db["users"]
 books_collection = db["books"]
 reservations_collection = db["reservations"]
 
+class EmailRequest(BaseModel):
+    email: str
 
 @app.post("/recommendations")
-async def get_recommendations(email: str):
+async def get_recommendations(request: EmailRequest):
     """
     Retrieve a user's preferences, update them based on purchase history,
     and find books with genres matching the updated preferences,
@@ -39,6 +40,8 @@ async def get_recommendations(email: str):
     If the user has no preferences and no reservations, recommend 5 random books.
     """
     try:
+        email = request.email
+
         # Find the user by email
         user = users_collection.find_one({"email": email})
         if not user:
