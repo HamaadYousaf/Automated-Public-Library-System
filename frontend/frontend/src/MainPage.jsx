@@ -118,7 +118,7 @@ export default function MainPage({ isLoggedIn, searchTerm }) {
                             {genre}
                         </label>
                     ))}
-                    <button onClick={fetchRecommendations} style={{ marginLeft: "1rem" }}>
+                    <button className="recommendation-button" onClick={fetchRecommendations}>
                         Get Recommendations
                     </button>
                 </div>
