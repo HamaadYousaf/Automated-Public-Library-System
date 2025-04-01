@@ -103,3 +103,13 @@
     height: 12rem;
     margin: 1rem 0;
 }
+
+.recommendation-button {
+    background-color: orange;
+    margin-left: 1rem;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    padding: 8px 20px 8px 20px;
+    cursor: pointer;
+}
