@@ -1,6 +1,4 @@
 import "./MainPage.css";
-import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -150,12 +148,6 @@ export default function MainPage({ isLoggedIn, searchTerm }) {
                         </div>
                     </div>
                 ))}
-            </div>
-
-            <div className="pagination">
-                <Stack spacing={2}>
-                    <Pagination className="custom-pagination" count={15} />
-                </Stack>
             </div>
         </div>
     );
